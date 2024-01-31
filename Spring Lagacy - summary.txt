@@ -2,7 +2,7 @@
 
 사용자가 웹 서비스를 사용하는 과정
 브라우저 -(서비스요청)-> 웹서버(아파치 톰캣) -> 어플리케이션 서버 -> DB
-										 서버 프로그램
+						 서버 프로그램
 DB ->  어플리케이션 서버 -> 웹서버 -(서비스응답)-> 브라우저(화면, html)
 
 서버 프로그램은 사용자의 요청(request)에 따라 DB와 연동하여 다양한 작업을
@@ -79,7 +79,7 @@ EL(Expression Language)
     이름 하나로 구성된 식, 연산자를 포함하는 식, 자바의 정적 메소드를 호출하는 식 등
     
     ${cnt+1}			<%=cnt+1%>
-     - El -				- jsp 표현식 -
+     - El -			- jsp 표현식 -
      
     jsp 표현식의 cnt는 변수!
     EL의 cnt는 request의 속성!(표현식과 다르다!)
@@ -207,3 +207,59 @@ format 라이브러리
   		page 속성 - 이동할 페이지를 작성
   		기본 객체의 attribute에 데이터를 저장하여 전달할 때 사용.
 
+Spring boot with JSP
+
+JSP : View (HTML + JAVA) - Java Server Page
+Java로 웹 프로그래밍을 하기 위한 방식
+
+Server 프로그래밍 패턴 - MVC 패턴
+Model - Dto, Service => Model 객체
+View - JSP, Thymeleaf
+Controller
+
+프로젝트 생성
+New Project
+1. Name : 프로젝트 명
+2. Builder Type : Maven(또는 Gradle)
+3. Group : com.icia
+4. Packaging : War
+> Next (라이브러리 설정)
+Spring DevTools, Lombok, Spring Web
+> Create
+
+추가 라이브러리(pom.xml)
+1. tomcat-embed-jasper
+2. jstl
+------------------------------------------------------------------
+<dependency>
+	<groupId>org.apache.tomcat.embed</groupId>
+	<artifactId>tomcat-embed-jasper</artifactId>
+</dependency>
+<dependency>
+	<groupId>org.glassfish.web</groupId>
+	<artifactId>jakarta.servlet.jsp.jstl</artifactId>
+	<version>2.0.0</version>
+</dependency>
+------------------------------------------------------------------
+(build.gradle)
+implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
+------------------------------------------------------------------
+
+빌더(Builder)
+  자바코드를 기계어로 변환(컴파일)하고,
+  프로그램 실행에 필요한 라이브러리를 포함시켜
+  최종적으로 프로그램을 완성시키는 도구.
+  1) Maven - pom.xml에 라이브러리를 설정.
+  2) Gradle - build.gradle에 라이브러리 설정.
+
+JSP 설정
+1. views 폴더 생성
+    src > main > webapp > WEB-INF > views
+
+2. application.properties
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+
+※ 참고 pom.xml 등 xml에서 뜨는 오류가 아닌 오류 처리
+Preferences > Maven -> Download Artifact JavaDoc 체크할것
