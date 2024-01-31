@@ -1,0 +1,113 @@
+jsp용 폴더 생성 : webapp/WEB-INF/views
+
+application.properties 설정
+  - view prefix/suffix
+  - static resources
+
+Port number(포트 번호)
+  같은 컴퓨터(서버)에 인터넷을 사용하는 여러 프로그램이
+  동시에 동작 중일 때, IP로는 프로그램을 구분할 수 없음.
+  각 프로그램을 식별하기 위한 번호(주소)를 포트 번호라고 한다.
+  널리 사용 중인 포트 번호
+  - Web 서버 : 80
+  - FTP 서버 : 20/21
+  - MySQL : 3306
+  - 오라클 : 1521
+
+상황처리(view와 controller 연동)
+0. 첫페이지
+    views 폴더에 jsp 파일 작성
+    주로 사용하는 첫페이지 파일명
+    1) index.jsp
+    2) default.jsp
+    3) home.jsp
+    그 외 다른 파일명을 사용할 경우
+    Controller 클래스를 작성하여 url '/'와
+    매핑시킨 메소드를 작성.
+
+    자원(이미지, css, js 등) 활용
+    1) static 폴더에 각 자원을 모을 폴더를 작성.
+    2) 각 폴더에 해당 자원을 넣기.
+
+1. 페이지 -> 페이지 이동
+    1) 이동할 페이지 작성
+    2) 링크에 작성한 url에 매핑되는 메소드 작성.
+
+    <a> 태그는 무조건 get 방식으로 전송.
+    자바스크립트의 location.href="url" 도 get방식.
+
+2. 페이지 -[Data]-> controller
+    1) form 태그와 input 태그로 전송
+    2) 전송방식 get/post
+
+    input 태그의 name 속성의 값과 메소드의
+    파라미터 이름을 똑같이 작성한다.
+
+    데이터 전송
+    1) 파라미터 활용
+        입력 태그 개수만큼 매개변수를 선언.
+        모든 매개변수 앞에 @RequestParam("name")
+        을 붙인다.('name'에는 input 태그의 name
+        속성값을 넣는다.)
+        input 태그의 name 속성값과 매개변수 이름을
+        똑같이 작성할 경우 @RequestParam은 생략.
+
+    2) DTO 활용
+        input 태그의 name 속성값과 같은 필드명으로 하여
+        DTO 클래스를 작성.
+        spring 프레임워크가 같은 이름의 필드를 찾아서
+        값을 넣어줌.
+        이때 형변환도 자동으로 처리함.
+
+    제품 정보를 전송하도록 작성해 보세요.
+    DTO 및 입력화면을 작성할 것.
+
+3. controller -[Data]-> 페이지(jsp)
+  백엔드 프로그램에서 처리된 데이터를 화면(jsp)로 보내는 방법
+  1) Model 객체 활용
+    Model 객체 : 데이터를 담아서 옮기는데 사용하는 객체
+    새로 생성할 필요 없이 Controller에 자동으로 들어옴.
+    데이터 전송이 필요한 메소드는 Model을 받아서 데이터를
+    삽입하면, 자동으로 DispatcherServlet에 넘어감.
+    사용하려면 매개변수로 Model을 선언하면 됨.
+    보낼 데이터 -> Model
+    보낼 페이지 -> String
+
+    데이터를 추가하는 메소드 : addAttribute("식별자", 데이터)
+
+  2) ModelAndView 객체 활용
+    Model과 페이지 지정 문자열을 합쳐서 처리하는 객체.
+    ModelAndView 객체를 생성하여 데이터와 페이지를 함께
+    저장하고 보내는 방식.
+    데이터를 추가하는 메소드 : addObject("식별자", 데이터)
+    페이지를 지정하는 메소드 : setViewName("jsp파일명")
+
+  JSP에서 데이터 출력 - EL(Expression Language)
+    JSP에서 사용하는 출력용 문법
+    형식) ${변수나 연산식}
+
+    HTML 태그와 병행하여 사용 가능.
+
+JSTL(Jsp Standard Tag Library)
+  - 간단한 프로그램 로직 구현(변수 활용, 제어문 등)
+  - 다른 jsp 페이지를 포함.
+  - 날짜, 시간, 숫자의 형식 지정
+  - 문자열 처리 함수 제공
+
+  JSTL 라이브러리 필요(dependency) - 1.2 버전.
+
+  라이브러리 구성
+  1) 코어(core) : 접두어는 'c'. 변수, 제어문 등 포함.
+    uri - http://java.sun.com/jsp/jstl/core
+  2) 포맷(format) : 접두어는 'fmt'. 출력형식 지정
+    uri - http://java.sun.com/jsp/jstl/fmt
+  3) 함수(functions) : 접두어는 'fn'. 기타..
+    uri - http://java.sun.com/jsp/jstl/functions
+
+  페이지에 라이브러리를 포함시키는 방법
+  <%@ tablib prefix="c" uri="http://java......"%>
+  jsp 페이지 윗줄에 위와 같이 작성.
+
+
+계산기 페이지를 작성하세요.(정수 4칙 연산)
+입력 페이지 -> controller -> 출력 페이지

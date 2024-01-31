@@ -1,0 +1,110 @@
+JSTL(Jsp Standard Tag Library)
+  - 간단한 프로그램 로직 구현(변수 활용, 제어문 등)
+  - 다른 jsp 페이지를 포함.
+  - 날짜, 시간, 숫자의 형식 지정
+  - 문자열 처리 함수 제공
+
+  JSTL 라이브러리 필요(dependency) - 1.2 버전.
+
+  라이브러리 구성
+  1) 코어(core) : 접두어는 'c'. 변수, 제어문 등 포함.
+    uri - http://java.sun.com/jsp/jstl/core
+  2) 포맷(format) : 접두어는 'fmt'. 출력형식 지정
+    uri - http://java.sun.com/jsp/jstl/fmt
+  3) 함수(functions) : 접두어는 'fn'. 기타..
+    uri - http://java.sun.com/jsp/jstl/functions
+
+  페이지에 라이브러리를 포함시키는 방법
+  <%@ tablib prefix="c" uri="http://java......"%>
+  jsp 페이지 윗줄에 위와 같이 작성.
+
+  JSP 페이지 구성 요소
+  1) 지시자(Directive)
+    JSP 페이지에 대한 설정 정보를 지정할 때 사용.
+    - page : 기본적으로 필요한 지시자. 문서 타입이나
+            라이브러리를 포함하도록 지시.
+    - taglib : jstl을 사용하기 위한 지시자.
+    - include : 다른 jsp 페이지를 포함하여 하나의
+                페이지를 작성할 때 사용하는 지시자.
+  2) Scriptlet(스크립트릿) : 자바코드 작성 영역.
+            '<%'와 '%>' 사이에 작성.
+  3) Declaration(선언부) : 메소드 작성 영역
+            '<%!'와 '%>' 사이에 작성.
+  4) Expression(표현식) : 변수 값 출력용 영역
+            '<%='과 '%>' 사이에 작성.
+  5) EL(Expression Language)
+        Expression 대신 사용. 데이터 출력.
+  6) Tag Library(JSTL) : 자바의 제어문(if, for 등)을
+        태그 형식으로 제공하는 라이브러리.
+
+  jsp -> 자바코드부분 발췌 -> 클래스화 -> 컴파일
+  -> 실행 -> html로 생성 -> 전달
+
+JSTL 라이브러리
+1. Core 태그(프로그램 로직 관련 태그들)
+  1) set : 페이지에서 사용하는 변수를 생성하는 태그.
+            EL을 사용하여 출력 및 활용.
+        형식) <c:set var="변수명" value="값"></c:set>
+  2) remove : set으로 생성한 변수를 제거하는 태그.
+        형식) <c:remove var="변수명"></c:remove>
+  3) if : 자바의 if 문에 해당하는 태그.
+        else에 해당하는 태그는 없음.
+        주요속성)
+        - test : 조건식을 작성하는 속성. true인 경우 실행.
+  4) choose, when, otherwise :
+        자바의 switch(case, default)에 해당하는 태그.
+        choose 태그는 grouping의 용도로 사용.
+        when 태그로 분기를 처리. (test 속성을 사용)
+        otherwise 태그는 default와 같은 태그.
+  5) forEach : 자바의 for 문에 해당하는 태그.
+        주요속성)
+        - var : 일종의 count 변수를 생성.
+        - begin : count변수의 시작값을 설정하는 속성.
+        - end : 반복하는 횟수의 마지막 값을 설정하는 속성.
+                설정값 이하의 횟수만큼 반복.
+        - step : count 값의 증가 폭을 지정.
+                생략 시 1씩 증가.
+        - items : 배열 구조(ArrayList 등)의 데이터를 지정.
+                var과 함께 사용하면 배열에서 하나를 꺼내와
+                var에 넣어서 사용. 배열 구조의 마지막 원소까지
+                반복적으로 실행.- for(int i : intArray)
+        - varStatus : 반복 상태를 알 수 있는 변수를 지정.
+            index - 사용하는 항목의 순번. 0부터 시작.
+            count - 반복하는 항목이 몇번째 항목인지를 나타냄.
+                    1부터 시작.
+            first - 반복의 처음인가? true/false
+            last - 반복의 마지막인가? true/false
+        예) <c:forEach var="a" items="list" varStatus="state">
+                <p>${state.index}</p> -> 화면에 0이 찍힘.
+            </c:forEach>
+  6) import : 다른 jsp 페이지를 포함시키는 태그.
+        주요속성)
+        - url : 포함시킬 jsp 파일명을 작성.
+
+  참고) EL의 empty 연산자
+    식별자를 통해 전달되는 데이터가 없으면(null이면) true,
+    데이터가 있으면 false로 처리하는 연산자.
+
+2. format
+  형식 : <fmt:xxxxx>
+  1) formatDate : 날짜와 시간의 출력 형식을 지정.
+    주요 속성)
+    - value : 날짜 객체 지정(Date 객체)
+    - type : date - 날짜, time - 시간(기본값 date)
+            both - 날짜와 시간 모두 출력
+    - xxxxStyle : 날짜/시간 형식 지정.(정해진 형식)
+            full, long, medium, short 형태로 지정.
+    - pattern : 사용자 형식으로 지정.(자유 형식)
+  2) formatNumber : 숫자 출력 형식 지정.(금액, 소수점 등)
+    주요속성)
+    - value : 출력할 숫자 값 입력.
+    - groupingUsed : 세자리마다 ',' 출력. true
+    - pattern : 소수점 출력 형식 지정.
+        # - 자릿 수 표현 기호.(#.###)
+        0 - 자릿 수 표현 기호. 빈 공간에 0 출력(#.000)
+    - type : 출력 숫자에 대한 형식 지정.
+        currency - 금액 출력 형식으로 지정.
+                통화 기호를 앞에 출력(국가에 따라 다름)
+        percent - value가 소수점 값일 경우 퍼센트로
+                변경하여 출력. 0.1 -> 10%
+    - currencySymbol : 통화 기호 변경 속성.
