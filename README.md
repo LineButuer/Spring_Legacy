@@ -7,9 +7,9 @@
 # root 계정으로 실행
 
 create database if not exists movie_db;
-create user if not exists db_user@localhost identified by '1111';
+create user if not exists db_user@localhost identified by '1234';
 grant all privileges on movie_db.* to db_user@localhost;
-ALTER USER 'db_user'@'localhost' IDENTIFIED WITH mysql_native_password BY '1111';
+ALTER USER 'db_user'@'localhost' IDENTIFIED WITH mysql_native_password BY '1234';
 FLUSH PRIVILEGES;
 
 ```
